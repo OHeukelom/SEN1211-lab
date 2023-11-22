@@ -1,0 +1,37 @@
+name: Build and Test
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  # Initialize and run the model for a few steps just to see if it works (see run.py)
+  run-model:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.12"
+    - name: Install Mesa
+      run: pip install mesa
+    - name: Run model
+      run: |
+        export PYTHONPATH=$GITHUB_WORKSPACE
+        python run.py
+      working-directory: boltzmann_wealth_model
+
+  # Run all the unittest with pytest
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.12"
+    - name: Install Mesa and pytest
+      run: pip install mesa pytest
+    - name: Test with Pytest
+      run: |
+        export PYTHONPATH=$GITHUB_WORKSPACE
+        pytest
+      working-directory: boltzmann_wealth_model
