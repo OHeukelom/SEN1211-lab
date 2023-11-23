@@ -23,8 +23,8 @@ class MoneyAgent(Agent):
         )  # Ensure agent is not giving money to itself
         if len(cellmates) > 0:
             other = self.random.choice(cellmates)
-            other.wealth += 1
-            self.wealth -= 1
+            other.wealth += 0.25
+            self.wealth -= 0.25
 
     def step(self):
         self.move()
